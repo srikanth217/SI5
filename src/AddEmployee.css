@@ -1,0 +1,38 @@
+.main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: auto;
+    padding: 10px;
+}
+
+.column {
+
+    justify-self: end;
+    align-self: start;
+    text-align: right;
+    max-width: 80%;
+    padding: 1%;
+    margin: 1%;
+}
+.colum {
+    justify-self: start;
+    align-self: center;
+    text-align: left;
+    width: 80%;
+    max-width: 100%;
+    padding: 1%;
+    margin: 1%;
+}
+.button {
+
+
+    width: 10px;
+    height: auto;
+    padding: 3px;
+    margin-left: 100%;
+
+
+}
+h3 {
+    text-align:center;
+}

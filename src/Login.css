@@ -1,0 +1,39 @@
+.form {
+    width: 500px;
+    margin: 0 auto;
+    padding: 200px;
+}
+.left{
+
+    justify-self: end;
+    align-self: start;
+    text-align: right;
+    max-width: 80%;
+    padding: 1%;
+    margin: 1%;
+}
+.right{
+    justify-self: start;
+    align-self: center;
+    text-align: left;
+    width: 80%;
+    max-width: 100%;
+    padding: 1%;
+    margin: 1%;
+}
+.row{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: auto;
+    padding: 10px;
+}
+.submit-button {
+
+
+    width: auto;
+    height: auto;
+    padding: 5px;
+    margin-left: 50%;
+
+
+}
