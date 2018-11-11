@@ -1,39 +1,105 @@
-.form {
-    width: 500px;
-    margin: 0 auto;
-    padding: 200px;
+.box-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 24em;
+    min-width: 21em;
+    box-shadow: 1px 1px 20px 1px rgba(15, 15, 15, 0.2);
+    border-radius: 6px;
+    padding: 24px;
+    margin: 18vh;
 }
-.left{
 
-    justify-self: end;
-    align-self: start;
-    text-align: right;
-    max-width: 80%;
-    padding: 1%;
-    margin: 1%;
+.inner-container {
+    transition: visibility 0.2s ease-out;
 }
-.right{
-    justify-self: start;
-    align-self: center;
-    text-align: left;
-    width: 80%;
-    max-width: 100%;
-    padding: 1%;
-    margin: 1%;
+
+.inner-container.show {
+    visibility: visible;
 }
-.row{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin: auto;
-    padding: 10px;
-}
-.submit-button {
 
 
-    width: auto;
+
+.box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+  .login-label {
+      font-family: Oxygen, sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      padding-left: 5px;
+  }
+
+
+  .login-input {
+      height: 2.1em;
+      border-radius: 3px;
+      border: 1px solid #6565e7;
+      transition: border 0.4s ease-out;
+      padding: 5px;
+      font-family: Oxygen, sans-serif;
+      font-size: 19px;
+      color: #3e3e42;
+      background: rgba(15, 15, 15, 0.01);
+  }
+
+.login-input:hover {
+    border: 2px solid #6565e7;
+}
+
+.login-input:focus {
+    border: 2px solid #6565e7;
+    box-shadow: 1px 1px 20px rgba(15, 15, 15, 0.2);
+}
+
+
+  .login-input::placeholder {
+      font-family: Oxygen, sans-serif;
+      font-size: 16px; //color: rgba(46, 213, 116, 0.839);
+      color: rgba(15, 15, 15, 0.4);
+  }
+
+.login-btn {
+    padding: 2px 30px;
+    font-size: 18px;
+    border-radius: 3px;
+    font-family: Oxygen, sans-serif;
+    background-color: rgba(15, 15, 15, 0.03);
+    margin-top: 20px;
+    border: 2px solid #417cef;
+    transition: background-color 0.3s ease-out;
+    cursor: pointer;
+}
+
+.login-btn:hover,
+.login-btn:focus {
+    background-color: #417cef;
+    color: white;
+}
+.bg {
+
+    min-height: 100%;
+    min-width: 1024px;
+    width: 100%;
     height: auto;
-    padding: 5px;
-    margin-left: 50%;
-
-
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+@media screen and (max-width: 1024px) {
+    .bg {
+        left: 50%;
+        margin-left: -512px;
+    }
 }

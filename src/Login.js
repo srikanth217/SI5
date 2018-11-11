@@ -1,32 +1,56 @@
 import React from 'react';
 import './Login.css';
+import Img from './assets/images/img3.jpg';
+import Header from "./Header";
 
-const Login = () => (
-<div className="main">
-    <form className="form">
-        <div className="row" id="user-row">
-            <label for="email" className="left" id="email-id"> Email: </label>
-            <input name="email" className="right"  type="email" required/>
+class Login extends React.Component {
 
-        </div>
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
 
-        <div className=" row" id="password-row">
-            <label for=" password" className=" left" id=" password-id"> Password: </label>
-            <input  name=" password" className=" right"  type=" password" required/>
+    submitLogin(e) {}
 
-        </div>
-        <div className="submit" id="submit-row">
-            <button className="submit-button" type="submit" name="submit">Submit </button>
-        </div>
+    render() {
+        return (
 
+            <div className="box-container">
+                <img src={Img} alt="bg" className="bg"/>
+            <div className="inner-container">
 
+                <div className="box">
 
+                    <div className="input-group">
+                        <label className="login-label" htmlFor="username">Username</label>
+                        <input
+                            type="text"
+                            name="username"
+                            className="login-input"
+                            placeholder="Username"/>
+                    </div>
 
+                    <div className="input-group">
+                        <label className="login-label" htmlFor="password">Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            className="login-input"
+                            placeholder="Password"/>
+                    </div>
 
-    </form>
+                    <button
+                        type="button"
+                        className="login-btn"
+                        onClick={this
+                            .submitLogin
+                            .bind(this)}>Login</button>
+                </div>
+            </div>
+            </div>
+        );
+    }
 
-</div>
-
-);
+}
 
 export  default Login;
