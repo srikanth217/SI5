@@ -1,16 +1,44 @@
 import React from 'react';
+import axios from 'axios';
 import './Login.css';
-import Img from './assets/images/img3.jpg';
+import Img from './assets/images/img4.png';
 import Header from "./Header";
 
 class Login extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
-    }
+        this.state = {
+            inputFields: {
+                username: '',
+                password: ''
+            }
 
-    submitLogin(e) {}
+        };
+        this.inputHandler = this.inputHandler.bind(this);
+        this.submitHandler = this.submitHandler.bind(this);
+    };
+
+
+
+    submitHandler(inputFields) {
+        axios.post('/login', inputFields).then(
+            () => {
+                console.log('form submitted');
+            }
+        );
+    console.log('form submitted');
+
+    }
+    inputHandler(e) {
+        let inputFields = {...this.state.inputFields};
+        inputFields[e.target.username] = e.target.value;
+            inputFields[e.target.password] = e.target.value;
+        this.setState({
+            inputFields
+        });
+
+    }
 
     render() {
         return (
@@ -24,10 +52,12 @@ class Login extends React.Component {
                     <div className="input-group">
                         <label className="login-label" htmlFor="username">Username</label>
                         <input
-                            type="text"
+                            type="email"
                             name="username"
                             className="login-input"
-                            placeholder="Username"/>
+                            placeholder="Username"
+                            value={this.state.username}
+                             onChange={this.inputHandler}/>
                     </div>
 
                     <div className="input-group">
@@ -36,15 +66,15 @@ class Login extends React.Component {
                             type="password"
                             name="password"
                             className="login-input"
-                            placeholder="Password"/>
+                            placeholder="Password"
+                            value={this.state.password}
+                            onChange={this.inputHandler}/>
                     </div>
 
                     <button
                         type="button"
                         className="login-btn"
-                        onClick={this
-                            .submitLogin
-                            .bind(this)}>Login</button>
+                        onClick={this.submitHandler}>Login</button>
                 </div>
             </div>
             </div>

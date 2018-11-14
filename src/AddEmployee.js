@@ -1,8 +1,11 @@
 import React from 'react';
-import './AddEmployee.css'
+import './AddEmployee.css';
+import Img from './assets/images/img4.png';
+
 
 const AddEmployee = () => (
     <form className="main">
+        <img src={Img} alt="bg" className="bg"/>
         <div className="row__top">
             <div className="column__left">
                 <h3>Employee Details</h3>

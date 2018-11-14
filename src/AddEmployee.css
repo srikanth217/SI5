@@ -67,3 +67,21 @@
     box-shadow: 0.4vh 0.3vw 20px black;
     z-index: 15;
 }
+
+.bg {
+
+    min-height: 100%;
+    min-width: 1024px;
+    width: 100%;
+    height: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+@media screen and (max-width: 1024px) {
+    .bg {
+        left: 50%;
+        margin-left: -512px;
+    }
+}
