@@ -13,32 +13,32 @@ class Login extends React.Component {
                 username: '',
                 password: ''
             }
-
         };
-        this.inputHandler = this.inputHandler.bind(this);
+        this.userHandler = this.userHandler.bind(this);
         this.submitHandler = this.submitHandler.bind(this);
     };
 
 
 
-    submitHandler(inputFields) {
+    submitHandler = (inputFields) => {
         axios.post('/login', inputFields).then(
             () => {
-                console.log('form submitted');
+
             }
         );
-    console.log('form submitted');
 
-    }
-    inputHandler(e) {
+
+    };
+    userHandler = (event) => {
         let inputFields = {...this.state.inputFields};
-        inputFields[e.target.username] = e.target.value;
-            inputFields[e.target.password] = e.target.value;
+        inputFields[event.target.name] = event.target.value;
         this.setState({
             inputFields
         });
 
-    }
+
+    };
+
 
     render() {
         return (
@@ -57,7 +57,7 @@ class Login extends React.Component {
                             className="login-input"
                             placeholder="Username"
                             value={this.state.username}
-                             onChange={this.inputHandler}/>
+                             onChange={this.userHandler}/>
                     </div>
 
                     <div className="input-group">
@@ -68,7 +68,7 @@ class Login extends React.Component {
                             className="login-input"
                             placeholder="Password"
                             value={this.state.password}
-                            onChange={this.inputHandler}/>
+                            onChange={this.userHandler}/>
                     </div>
 
                     <button
