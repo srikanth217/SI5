@@ -1,13 +1,15 @@
 import React from 'react';
 
+import Button from '../../Button/Button';
+
 const navigationItem = (props) => {
-    const buttonClassNames = `btn btn-dark ml-1 text-capitalize ${props.active ? 'active': ''}`;
     return (
         <li className="nav-item">
-            <button className={buttonClassNames}
-                onClick={props.clicked}>
-                {props.title}
-            </button>
+            <Button
+                btnColor={"btn-dark"}
+                clicked={props.clicked}
+                title={props.title}
+                active={props.active}/>
         </li>
     );
 };
