@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import './Login.css';
-import Img from './assets/images/img4.png';
+import Img from './assets/images/img1.png';
 import Header from "./Header";
 
 class Login extends React.Component {
@@ -10,23 +10,18 @@ class Login extends React.Component {
         super(props);
         this.state = {
             inputFields: {
-                username: '',
-                password: ''
+                username: null,
+                password: null
             }
         };
-        this.userHandler = this.userHandler.bind(this);
-        this.submitHandler = this.submitHandler.bind(this);
     };
-
-
-
-    submitHandler = (inputFields) => {
-        axios.post('/login', inputFields).then(
+    submitHandler = () => {
+        axios.post('/hr/login', this.state.inputFields).then(
             () => {
 
             }
         );
-
+        console.log(this.state.inputFields);
 
     };
     userHandler = (event) => {
@@ -74,7 +69,7 @@ class Login extends React.Component {
                     <button
                         type="button"
                         className="login-btn"
-                        onClick={this.submitHandler}>Login</button>
+                        onClick={(event) =>this.submitHandler(event, this.state.inputFields)}>Login</button>
                 </div>
             </div>
             </div>

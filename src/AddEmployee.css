@@ -54,7 +54,7 @@
     border-radius: 6px;
 }
 
-.row__buttom {
+.row__button {
     display: grid;
     grid-template-columns: auto;
     justify-items: center;
