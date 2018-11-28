@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+
 import './Dashboard.css';
+import Login from '../../components/Login/Login';
 import Navigation from '../../components/Navigation/Navigation';
 
 class Dashboard extends React.Component {
@@ -53,34 +55,13 @@ class Dashboard extends React.Component {
 
     getLoginJsx = () => {
         return (
-            <div className="login">
-                <div className="container justify-content-center" style={{height: '100vh'}}>
-                    <h1 className="display-4 text-center" style={{paddingTop: '15vh'}}>Log In</h1>
-                    <div className="form-group text-center">
-                        <input type="checkbox" className="switch_1" onChange={this.toggleIsHrLogin} checked={this.state.isHrLogin} />
-                        <small className="form-text text-muted">You are Logging as {!this.state.isHrLogin ? 'Employee' : 'HR'}. Toggle above to change</small>
-                    </div>
-                    <div className="form">
-                        <div className="form-group">
-                            <input type="email" className="form-control form-control-lg"
-                                   placeholder="Username" name="username" onChange={this.changeInputFieldsHandler} />
-                        </div>
-                        <div className="form-group">
-                            <input type="password" className="form-control form-control-lg"
-                                   placeholder="Password" name="password" onChange={this.changeInputFieldsHandler} />
-                        </div>
-                        <div className="form-group">
-                            <button type="button" className="btn btn-lg btn-info btn-block mt-4"
-                                    onClick={(event) => this.submitLoginHandler(event, this.state.inputFields)}>
-                                Login
-                            </button>
-                            {this.state.loginError
-                                ? <div className="form-text text-danger text-center">Invalid credentials, please try again.</div>
-                                : null}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Login
+                isHrLogin={this.state.isHrLogin}
+                loginError={this.state.loginError}
+                toggleIsHrLogin={this.toggleIsHrLogin}
+                changeInputFieldsHandler={this.changeInputFieldsHandler}
+                submitLoginHandler={(event) => this.submitLoginHandler(event, this.state.inputFields)}
+            />
         );
     };
 
