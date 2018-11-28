@@ -1,6 +1,6 @@
 import React from 'react';
 import './AddEmployee.css';
-import Img from './assets/images/img4.png';
+import Img from '../../assets/images/img4.png';
 import axios from "axios";
 
 
