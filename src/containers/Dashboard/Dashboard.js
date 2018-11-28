@@ -93,6 +93,7 @@ class Dashboard extends React.Component {
                 clicked: () => this.updatedNavItemsFor('hr', key),
             };
         });
+        // todo: Add Employee (same as this.getHrViewEmployee but first prepare a state less component using bootstrap_theme)
         return (
             <div>
                 <Navigation navigationItems={navItems} />
