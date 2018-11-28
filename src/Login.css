@@ -1,105 +1,39 @@
-.box-container {
-    display: flex;
-    flex-direction: column;
-    max-width: 24em;
-    min-width: 21em;
-    box-shadow: 1px 1px 20px 1px rgba(15, 15, 15, 0.2);
-    border-radius: 6px;
-    padding: 24px;
-    margin: 18vh;
-}
-
-.inner-container {
-    transition: visibility 0.2s ease-out;
-}
-
-.inner-container.show {
-    visibility: visible;
-}
-
-
-
-.box {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.input-group {
-    display: flex;
-    flex-direction: column;
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
-
-  .login-label {
-      font-family: Oxygen, sans-serif;
-      font-size: 20px;
-      font-weight: 400;
-      padding-left: 5px;
-  }
-
-
-  .login-input {
-      height: 2.1em;
-      border-radius: 3px;
-      border: 1px solid #6565e7;
-      transition: border 0.4s ease-out;
-      padding: 5px;
-      font-family: Oxygen, sans-serif;
-      font-size: 19px;
-      color: #3e3e42;
-      background: rgba(15, 15, 15, 0.01);
-  }
-
-.login-input:hover {
-    border: 2px solid #6565e7;
-}
-
-.login-input:focus {
-    border: 2px solid #6565e7;
-    box-shadow: 1px 1px 20px rgba(15, 15, 15, 0.2);
-}
-
-
-  .login-input::placeholder {
-      font-family: Oxygen, sans-serif;
-      font-size: 16px; //color: rgba(46, 213, 116, 0.839);
-      color: rgba(15, 15, 15, 0.4);
-  }
-
-.login-btn {
-    padding: 2px 30px;
-    font-size: 18px;
-    border-radius: 3px;
-    font-family: Oxygen, sans-serif;
-    background-color: rgba(15, 15, 15, 0.03);
-    margin-top: 20px;
-    border: 2px solid #417cef;
-    transition: background-color 0.3s ease-out;
+input[type="checkbox"].switch_1{
+    font-size: 30px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 2.5em;
+    height: 1em;
+    background: #ddd;
+    border-radius: 3em;
+    position: relative;
     cursor: pointer;
+    outline: none;
+    -webkit-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
 }
 
-.login-btn:hover,
-.login-btn:focus {
-    background-color: #417cef;
-    color: white;
+input[type="checkbox"].switch_1:checked{
+    background: #0ebeff;
 }
-.bg {
 
-    min-height: 100%;
-    min-width: 1024px;
-    width: 100%;
-    height: auto;
-    position: fixed;
-    top: 0;
+input[type="checkbox"].switch_1:after{
+    position: absolute;
+    content: "";
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    background: #fff;
+    -webkit-box-shadow: 0 0 .25em rgba(0,0,0,.3);
+    box-shadow: 0 0 .25em rgba(0,0,0,.3);
+    -webkit-transform: scale(.7);
+    transform: scale(.7);
     left: 0;
-    z-index: -1;
+    -webkit-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
 }
-@media screen and (max-width: 1024px) {
-    .bg {
-        left: 50%;
-        margin-left: -512px;
-    }
+
+input[type="checkbox"].switch_1:checked:after{
+    left: calc(100% - 1em);
 }
