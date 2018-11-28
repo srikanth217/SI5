@@ -5,6 +5,7 @@ import './Dashboard.css';
 import Login from '../../components/Login/Login';
 import Navigation from '../../components/Navigation/Navigation';
 import EmployeeCards from '../../components/EmployeeCards/EmployeeCards';
+import Footer from '../../components/Footer/Footer';
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -18,17 +19,17 @@ class Dashboard extends React.Component {
             loginError: false,
             loginSuccess: false,
             hrDashboard: {
-                navItems: [
-                    { title: 'view employees', active: true },
-                    { title: 'add employee', active: false },
-                ],
+                navItems: {
+                    view: { title: 'view employees', active: false },
+                    add: { title: 'add employee', active: false },
+                },
                 employees: [],
             },
             employeeDashboard: {
-                navItems: [
-                    { title: 'view', active: false },
-                    { title: 'edit', active: false },
-                ],
+                navItems: {
+                    view: { title: 'view', active: false },
+                    edit: { title: 'edit', active: false },
+                },
                 employees: [],
             },
         };
@@ -40,10 +41,18 @@ class Dashboard extends React.Component {
         axios.get('https://jsonplaceholder.typicode.com/users')
             .then((res) => {
                 this.setState((prevState) => {
+                    const navItems = {
+                        ...prevState[dashboardKeyName].navItems,
+                        view: {
+                            ...prevState[dashboardKeyName].navItems.view,
+                            active: true,
+                        }
+                    };
                     return {
                         ...prevState,
                         [dashboardKeyName]: {
                             ...prevState[dashboardKeyName],
+                            navItems,
                             employees: this.state.isHrLogin ? res.data : [res.data[0]],
                         },
                         loginSuccess: true
@@ -79,6 +88,22 @@ class Dashboard extends React.Component {
         );
     };
 
+    updatedNavItemsFor = (dashboard = 'employee', key) => {
+        dashboard += 'Dashboard';
+        this.setState((prevState) => {
+            const navItems = { ...prevState[dashboard].navItems };
+            Object.keys(navItems).forEach(key => navItems[key].active = false);
+            navItems[key].active = true;
+            return {
+                ...prevState,
+                [dashboard]: {
+                    ...prevState[dashboard],
+                    navItems,
+                }
+            }
+        });
+    };
+
     deleteEmployeeHandler = (emploeeId) => {
         this.setState((prevState) => {
             const employees = prevState.hrDashboard.employees.filter(employee => employee.id !== emploeeId);
@@ -92,32 +117,52 @@ class Dashboard extends React.Component {
         });
     };
 
+    getHrViewEmployee = () => {
+        const hrDashboard = this.state.hrDashboard;
+        if (hrDashboard.navItems.view.active) {
+            const employeeCards = hrDashboard.employees.map(employee => {
+                return {
+                    cardHeader: employee.id,
+                    cardTitle: employee.name,
+                    cardButtons: [
+                        { btnColor: 'btn-info', title: 'view' },
+                        { btnColor: 'btn-warning', title: 'update' },
+                        { btnColor: 'btn-danger', title: 'delete', clicked: () => this.deleteEmployeeHandler(employee.id) }
+                    ],
+                }
+            });
+            return <EmployeeCards employeeCards={employeeCards} />;
+        }
+        return null;
+    };
+
     getHrDashboard = () => {
         const hrDashboard = this.state.hrDashboard;
-        const employeeCards = hrDashboard.employees.map(employee => {
+        const navItems = Object.keys(hrDashboard.navItems).map(key => {
             return {
-                cardHeader: employee.id,
-                cardTitle: employee.name,
-                cardButtons: [
-                    { btnColor: 'btn-info', title: 'view' },
-                    { btnColor: 'btn-warning', title: 'update' },
-                    { btnColor: 'btn-danger', title: 'delete', clicked: () => this.deleteEmployeeHandler(employee.id) }
-                ],
-            }
+                ...hrDashboard.navItems[key],
+                clicked: () => this.updatedNavItemsFor('hr', key),
+            };
         });
         return (
             <div>
-                <Navigation navigationItems={hrDashboard.navItems} />
-                <EmployeeCards employeeCards={employeeCards} />
+                <Navigation navigationItems={navItems} />
+                {this.getHrViewEmployee()}
             </div>
         );
     };
 
     getEmployeeDashboard = () => {
         const employeeDashboard = this.state.employeeDashboard;
+        const navItems = Object.keys(employeeDashboard.navItems).map(key => {
+            return {
+                ...employeeDashboard.navItems[key],
+                clicked: () => this.updatedNavItemsFor('employee', key),
+            };
+        });
         return (
             <div>
-                <Navigation navigationItems={employeeDashboard.navItems} />
+                <Navigation navigationItems={navItems} />
             </div>
         );
     };
@@ -125,7 +170,12 @@ class Dashboard extends React.Component {
     render() {
         let dashboard = this.getLoginJsx();
         if (this.state.loginSuccess) {
-            dashboard = this.state.isHrLogin ? this.getHrDashboard() : this.getEmployeeDashboard();
+            dashboard = (
+                <div>
+                    {this.state.isHrLogin ? this.getHrDashboard() : this.getEmployeeDashboard()}
+                    <Footer />
+                </div>
+            );
         }
         return dashboard;
     }

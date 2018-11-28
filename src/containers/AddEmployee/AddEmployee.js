@@ -3,7 +3,6 @@ import './AddEmployee.css';
 import Img from '../../assets/images/img4.png';
 import axios from "axios";
 
-
 class AddEmployee extends React.Component {
     constructor(props) {
         super(props);
