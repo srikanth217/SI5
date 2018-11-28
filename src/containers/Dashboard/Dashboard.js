@@ -15,7 +15,7 @@ class Dashboard extends React.Component {
                 username: null,
                 password: null
             },
-            isHrLogin: true,
+            isHrLogin: false,
             loginError: false,
             loginSuccess: false,
             hrDashboard: {
@@ -33,59 +33,6 @@ class Dashboard extends React.Component {
                 employees: [],
             },
         };
-    };
-
-    submitLoginHandler = () => {
-        // console.log(this.state);
-        const dashboardKeyName = `${this.state.isHrLogin ? 'hr' : 'employee'}Dashboard`;
-        axios.get('https://jsonplaceholder.typicode.com/users')
-            .then((res) => {
-                this.setState((prevState) => {
-                    const navItems = {
-                        ...prevState[dashboardKeyName].navItems,
-                        view: {
-                            ...prevState[dashboardKeyName].navItems.view,
-                            active: true,
-                        }
-                    };
-                    return {
-                        ...prevState,
-                        [dashboardKeyName]: {
-                            ...prevState[dashboardKeyName],
-                            navItems,
-                            employees: this.state.isHrLogin ? res.data : [res.data[0]],
-                        },
-                        loginSuccess: true
-                    };
-                });
-            })
-            .catch(() => this.setState({ loginError: true, loginSuccess: false }));
-    };
-
-    changeInputFieldsHandler = (event) => {
-        let inputFields = {...this.state.inputFields};
-        inputFields[event.target.name] = event.target.value;
-        this.setState({
-            inputFields
-        });
-    };
-
-    toggleIsHrLogin = () => {
-        this.setState((prevState) => {
-            return { isHrLogin: !prevState.isHrLogin };
-        });
-    };
-
-    getLoginJsx = () => {
-        return (
-            <Login
-                isHrLogin={this.state.isHrLogin}
-                loginError={this.state.loginError}
-                toggleIsHrLogin={this.toggleIsHrLogin}
-                changeInputFieldsHandler={this.changeInputFieldsHandler}
-                submitLoginHandler={(event) => this.submitLoginHandler(event, this.state.inputFields)}
-            />
-        );
     };
 
     updatedNavItemsFor = (dashboard = 'employee', key) => {
@@ -168,7 +115,7 @@ class Dashboard extends React.Component {
     };
 
     render() {
-        let dashboard = this.getLoginJsx();
+        let dashboard = this.getLogin();
         if (this.state.loginSuccess) {
             dashboard = (
                 <div>
@@ -179,6 +126,59 @@ class Dashboard extends React.Component {
         }
         return dashboard;
     }
+
+    getLogin = () => {
+        return (
+            <Login
+                isHrLogin={this.state.isHrLogin}
+                loginError={this.state.loginError}
+                toggleIsHrLogin={this.toggleIsHrLogin}
+                changeInputFieldsHandler={this.changeInputFieldsHandler}
+                submitLoginHandler={(event) => this.submitLoginHandler(event, this.state.inputFields)}
+            />
+        );
+    };
+
+    submitLoginHandler = () => {
+        // console.log(this.state);
+        const dashboardKeyName = `${this.state.isHrLogin ? 'hr' : 'employee'}Dashboard`;
+        axios.get('https://jsonplaceholder.typicode.com/users')
+            .then((res) => {
+                this.setState((prevState) => {
+                    const navItems = {
+                        ...prevState[dashboardKeyName].navItems,
+                        view: {
+                            ...prevState[dashboardKeyName].navItems.view,
+                            active: true,
+                        }
+                    };
+                    return {
+                        ...prevState,
+                        [dashboardKeyName]: {
+                            ...prevState[dashboardKeyName],
+                            navItems,
+                            employees: this.state.isHrLogin ? res.data : [res.data[0]],
+                        },
+                        loginSuccess: true
+                    };
+                });
+            })
+            .catch(() => this.setState({ loginError: true, loginSuccess: false }));
+    };
+
+    changeInputFieldsHandler = (event) => {
+        let inputFields = {...this.state.inputFields};
+        inputFields[event.target.name] = event.target.value;
+        this.setState({
+            inputFields
+        });
+    };
+
+    toggleIsHrLogin = () => {
+        this.setState((prevState) => {
+            return { isHrLogin: !prevState.isHrLogin };
+        });
+    };
 }
 
 export default Dashboard;
