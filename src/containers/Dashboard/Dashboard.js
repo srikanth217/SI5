@@ -71,6 +71,8 @@ class Dashboard extends React.Component {
                 return {
                     cardHeader: employee.id,
                     cardTitle: employee.name,
+                    cardText: employee.company.catchPhrase,
+                    cardEmail: employee.email,
                     cardButtons: [
                         { btnColor: 'btn-info', title: 'view' },
                         { btnColor: 'btn-warning', title: 'update' },

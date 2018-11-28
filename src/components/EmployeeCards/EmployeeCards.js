@@ -8,6 +8,8 @@ const employeeCards = (props) => {
         employeeCards = props.employeeCards.map((card, i) => <EmployeeCard
             cardHeader={card.cardHeader}
             cardTitle={card.cardTitle}
+            cardText={card.cardText}
+            cardEmail={card.cardEmail}
             cardButtons={card.cardButtons}
             key={i}/>);
     }
