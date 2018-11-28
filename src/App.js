@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import Login from './Login';
-import AddEmployee from './containers/AddEmployee/AddEmployee';
-
+import Dashboard from './containers/Dashboard/Dashboard';
 
 class App extends Component {
   render() {
     return (
-        <Login/>
+        <Dashboard />
     );
   }
 }
