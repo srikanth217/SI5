@@ -320,7 +320,7 @@ class Dashboard extends React.Component {
                 const employeeDataResponse = await axios.get(employeeDataUrl);
                 if (employeeDataResponse) {
                     const employees = this.state.isHrLogin
-                        ? employeeDataResponse.data.response.splice(0, 1)
+                        ? employeeDataResponse.data.response.splice(0, 20)
                         : [{
                             ...employeeDataResponse.data.response.payrollDetails,
                             ...employeeDataResponse.data.response.bankDetails,
