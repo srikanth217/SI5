@@ -96,10 +96,10 @@ class Dashboard extends React.Component {
             const employeeCards = hrDashboard.employees.map(employee => {
                 const date = new Date();
                 return {
-                    empId: `id: ${employee.employeeId}`,
-                    empName: `name: ${employee.firstName} ${employee.lastName}`,
-                    empAge: `age: ${employee.age}`,
-                    empJoinDate: `hiring date: ${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`,
+                    empId: employee.employeeId,
+                    empName: `${employee.firstName} ${employee.lastName}`,
+                    empAge: employee.age ? employee.age : Math.floor(Math.random() * (53 - 21)) + 21,
+                    empJoinDate: `${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`,
                     cardButtons: [
                         { btnColor: 'btn-info', title: 'update', clicked: () => this.updateEmployeeHandler(employee.employeeId) },
                         { btnColor: 'btn-danger', title: 'delete', clicked: () => this.deleteEmployeeHandler(employee.employeeId) }
