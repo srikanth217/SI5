@@ -4,76 +4,108 @@ const AddEmployee = (props) => {
     const employee = props.employee;
     return (
         <div className="container px-5">
+            <button type="button" className="btn btn btn-outline-dark ml-5"
+                    onClick={props.goBackHandler}>Go Back</button>
             <p className="display-4 text-center">Add Employee Details</p>
-            <form className="px-md-5">
+            <div className="form px-md-5">
                 <div className="form-group">
-                    <input type="text" className="form-control"
-                           placeholder="First Name" name="firstName" value={employee && employee.firstName ? employee.firstName : null} />
+                    <input type="text" className="form-control" placeholder="First Name" name="firstName"
+                           defaultValue={employee && employee.firstName ? employee.firstName : null}
+                           onChange={props.changeEmployeeFieldsHandler} />
                 </div>
                 <div className="form-group">
-                    <input type="text" className="form-control"
-                           placeholder="Last Name" name="lastName" value={employee && employee.lastName ? employee.lastName : null} />
+                    <input type="text" className="form-control" placeholder="Last Name" name="lastName"
+                           defaultValue={employee && employee.lastName ? employee.firstName : null}
+                           onChange={props.changeEmployeeFieldsHandler} />
                 </div>
                 <div className="form-group">
-                    <input type="number" className="form-control" placeholder="Age"
-                           name="age"  value={employee && employee.age ? employee.age : null}/>
+                    <input type="number" className="form-control" placeholder="Age" name="age"
+                           defaultValue={employee && employee.age ? employee.age : null}
+                           onChange={props.changeEmployeeFieldsHandler}/>
                 </div>
                 <div className="form-group">
                     <label className="h6 text-capitalize">date of birth</label>
-                    <input type="date" className="form-control" name="dateOfBirth" value={employee && employee.dateOfBirth ? employee.dateOfBirth : null} />
+                    <input type="date" className="form-control" name="dateOfBirth"
+                           defaultValue={employee && employee.dateOfBirth ? employee.dateOfBirth : null}
+                           onChange={props.changeEmployeeFieldsHandler} />
                 </div>
                 <div className="form-group">
-                    <input type="text" className="form-control" placeholder="Marital Status" name="maritalStatus"  value={employee && employee.maritalStatus ? employee.maritalStatus : null}/>
+                    <input type="text" className="form-control" placeholder="Marital Status" name="maritalStatus"
+                           defaultValue={employee && employee.maritalStatus ? employee.maritalStatus : null}
+                           onChange={props.changeEmployeeFieldsHandler}/>
                 </div>
                 <div className="form-group">
-                    <input type="text" className="form-control" placeholder="Gender" name="gender" value={employee && employee.gender ? employee.gender : null}/>
+                    <input type="text" className="form-control" placeholder="Gender" name="gender"
+                           defaultValue={employee && employee.gender ? employee.gender : null}
+                           onChange={props.changeEmployeeFieldsHandler}/>
                 </div>
                 <div className="form-group">
                     <label className="h6 text-capitalize">hiring date</label>
-                    <input type="date" className="form-control" name="hiringDate" value={employee && employee.hiringDate ? employee.hiringDate : null}/>
+                    <input type="date" className="form-control" name="hiringDate"
+                           defaultValue={employee && employee.hiringDate ? employee.hiringDate : null}
+                           onChange={props.changeEmployeeFieldsHandler}/>
                 </div>
                 <div className="form-group">
                     <label className="h6 text-capitalize">joining date</label>
-                    <input type="date" className="form-control" name="joiningDate" id="joiningDate" value={employee && employee.joiningDate ? employee.joiningDate : null}/>
+                    <input type="date" className="form-control" name="joiningDate" id="joiningDate"
+                           defaultValue={employee && employee.joiningDate ? employee.joiningDate : null}
+                           onChange={props.changeEmployeeFieldsHandler}/>
                 </div>
                 <div className="form-group">
-                    <input type="number" className="form-control" placeholder="Job Id"
-                           name="jobId" value={employee && employee.jobId ? employee.jobId : null}/>
+                    <input type="number" className="form-control" placeholder="Job Id" name="jobId"
+                           defaultValue={employee && employee.jobId ? employee.jobId : null}
+                           onChange={props.changeEmployeeFieldsHandler}/>
                 </div>
                 <div className="form-group">
-                    <input type="text" className="form-control" placeholder="Name of the School" name="nameOfSchool" value={employee && employee.nameOfSchool ? employee.nameOfSchool : null}/>
+                    <input type="text" className="form-control" placeholder="Name of the School" name="nameOfSchool"
+                           defaultValue={employee && employee.nameOfSchool ? employee.nameOfSchool : null}
+                           onChange={props.changeEmployeeFieldsHandler}/>
                 </div>
                 <div className="form-group">
-                    <input type="text" className="form-control" placeholder="Degree" name="degree" value={employee && employee.degree ? employee.degree : null} />
+                    <input type="text" className="form-control" placeholder="Degree" name="degree"
+                           defaultValue={employee && employee.degree ? employee.degree : null}
+                           onChange={props.changeEmployeeFieldsHandler} />
                 </div>
                 <div className="form-group">
                     <label className="h6 text-capitalize">start date</label>
-                    <input type="date" className="form-control" name="startDate" value={employee && employee.startDate ? employee.startDate : null}/>
+                    <input type="date" className="form-control" name="startDate"
+                           defaultValue={employee && employee.startDate ? employee.startDate : null}
+                           onChange={props.changeEmployeeFieldsHandler}/>
                 </div>
                 <div className="form-group">
                     <label className="h6 text-capitalize">end date</label>
-                    <input type="date" className="form-control" name="endDate" value={employee && employee.endDate ? employee.endDate : null}/>
+                    <input type="date" className="form-control" name="endDate"
+                           defaultValue={employee && employee.endDate ? employee.endDate : null}
+                           onChange={props.changeEmployeeFieldsHandler}/>
                 </div>
                 <div className="form-group">
-                    <input type="number" className="form-control" placeholder="Salary"
-                           name="amount" value={employee && employee.salary ? employee.salary : null}/>
+                    <input type="number" className="form-control" placeholder="Salary" name="amount"
+                           defaultValue={employee && employee.amount ? employee.amount : null}
+                           onChange={props.changeEmployeeFieldsHandler}/>
                 </div>
                 <div className="form-group">
-                    <input type="text" className="form-control" placeholder="Is monthly" name="isMonthly" value={employee && employee.isMonthly ? employee.isMonthly : null}/>
+                    <input type="text" className="form-control" placeholder="Is monthly" name="isMonthly"
+                           defaultValue={employee && employee.isMonthly ? employee.isMonthly : null}
+                           onChange={props.changeEmployeeFieldsHandler}/>
                 </div>
                 <div className="form-group">
-                    <input type="tel" className="form-control"  placeholder="Contact Number" name="phoneNumber"
-                           pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" value={employee && employee.phoneNumber ? employee.phoneNumber : null}/>
+                    <input type="tel" className="form-control" placeholder="Contact Number" name="phoneNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                           defaultValue={employee && employee.phoneNumber ? employee.phoneNumber : null}
+                           onChange={props.changeEmployeeFieldsHandler}/>
                 </div>
                 <div className="form-group">
-                    <input type="text" className="form-control" placeholder="Email" name="email" value={employee && employee.email ? employee.email : null}/>
+                    <input type="text" className="form-control" placeholder="Email" name="email"
+                           defaultValue={employee && employee.email ? employee.email : null}
+                           onChange={props.changeEmployeeFieldsHandler}/>
                 </div>
                 <div className="form-group">
-                    <textarea className="form-control" placeholder="Address"
-                              name="address" value={employee && employee.address ? employee.address : null}/>
+                    <textarea className="form-control" placeholder="Address" name="address"
+                              defaultValue={employee && employee.address ? employee.address : null}
+                              onChange={props.changeEmployeeFieldsHandler}/>
                 </div>
-                <input type="submit" className="btn btn-info btn-block mt-4"/>
-            </form>
+                <button type="button" className="btn btn-lg btn-info btn-block mt-4"
+                        onClick={props.submitPatchEmployeeHandler}>Submit</button>
+            </div>
         </div>
     );
 };

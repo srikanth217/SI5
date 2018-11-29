@@ -1,11 +1,11 @@
 import React from 'react';
 
-import Button from '../../Button/Button';
+import Button from '../../UI/Button/Button';
 
 const employeeCard = (props) => {
     return (
         <div className="card mb-3">
-            {props.cardHeader ? <div className="card-header h5 text-capitalize">id: {props.cardHeader}</div> : null}
+            {props.cardHeader ? <div className="card-header h5 text-capitalize">{props.cardHeader}</div> : null}
             <div className="card-body">
                 <div className="row">
                     <div className="col-md-7">

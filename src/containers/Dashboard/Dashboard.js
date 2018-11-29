@@ -5,7 +5,9 @@ import './Dashboard.css';
 import Login from '../../components/Login/Login';
 import Navigation from '../../components/Navigation/Navigation';
 import EmployeeCards from '../../components/EmployeeCards/EmployeeCards';
-import Footer from '../../components/Footer/Footer';
+import Footer from '../../components/UI/Footer/Footer';
+import Spinner from '../../components/UI/Spinner/Spinner';
+import AddEmployee from '../../components/AddEmployee/AddEmployee';
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -18,12 +20,15 @@ class Dashboard extends React.Component {
             isHrLogin: false,
             loginError: false,
             loginSuccess: false,
+            loading: false,
+            dashboardLoading: true,
             hrDashboard: {
                 navItems: {
                     view: { title: 'view employees', active: false },
                     add: { title: 'add employee', active: false },
                 },
                 employees: [],
+                updateEmployeeId: null,
             },
             employeeDashboard: {
                 navItems: {
@@ -46,6 +51,7 @@ class Dashboard extends React.Component {
                 [dashboard]: {
                     ...prevState[dashboard],
                     navItems,
+                    updateEmployeeId: null,
                 }
             }
         });
@@ -53,7 +59,7 @@ class Dashboard extends React.Component {
 
     deleteEmployeeHandler = (emploeeId) => {
         this.setState((prevState) => {
-            const employees = prevState.hrDashboard.employees.filter(employee => employee.id !== emploeeId);
+            const employees = prevState.hrDashboard.employees.filter(employee => employee.employeeId !== emploeeId);
             return {
                 ...prevState,
                 hrDashboard: {
@@ -64,25 +70,51 @@ class Dashboard extends React.Component {
         });
     };
 
+    updateEmployeeHandler = (emploeeId) => {
+        this.setState((prevState) => {
+            const navItems = { ...prevState.hrDashboard.navItems };
+            Object.keys(navItems).forEach(key => navItems[key].active = false);
+            return {
+                ...prevState,
+                hrDashboard: {
+                    ...prevState.hrDashboard,
+                    navItems,
+                    updateEmployeeId: emploeeId,
+                }
+            };
+        });
+    };
+
+    submitPatchEmployeeHandler = (employeeId) => {
+        // const patch
+    };
+
     getHrViewEmployee = () => {
         const hrDashboard = this.state.hrDashboard;
+        let hrViewEmployee = null;
         if (hrDashboard.navItems.view.active) {
             const employeeCards = hrDashboard.employees.map(employee => {
+                const date = new Date();
                 return {
-                    cardHeader: employee.id,
-                    cardTitle: employee.name,
-                    cardText: employee.company.catchPhrase,
-                    cardEmail: employee.email,
+                    cardHeader: `id: ${employee.employeeId}`,
+                    cardTitle: `name: ${employee.firstName} ${employee.lastName}`,
+                    cardText: `age: ${employee.age}`,
+                    cardEmail: `hiring date: ${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`,
                     cardButtons: [
-                        { btnColor: 'btn-info', title: 'view' },
-                        { btnColor: 'btn-warning', title: 'update' },
-                        { btnColor: 'btn-danger', title: 'delete', clicked: () => this.deleteEmployeeHandler(employee.id) }
+                        { btnColor: 'btn-info', title: 'update', clicked: () => this.updateEmployeeHandler(employee.employeeId) },
+                        { btnColor: 'btn-danger', title: 'delete', clicked: () => this.deleteEmployeeHandler(employee.employeeId) }
                     ],
                 }
             });
-            return <EmployeeCards employeeCards={employeeCards} />;
+            hrViewEmployee = <EmployeeCards employeeCards={employeeCards} />;
         }
-        return null;
+        if (hrDashboard.updateEmployeeId) {
+            hrViewEmployee = (
+                <AddEmployee
+                    goBackHandler={() => this.updatedNavItemsFor('hr', 'view')} />
+            );
+        }
+        return hrViewEmployee;
     };
 
     getHrDashboard = () => {
@@ -93,11 +125,10 @@ class Dashboard extends React.Component {
                 clicked: () => this.updatedNavItemsFor('hr', key),
             };
         });
-        // todo: Add Employee (same as this.getHrViewEmployee but first prepare a state less component using bootstrap_theme)
         return (
             <div>
                 <Navigation navigationItems={navItems} />
-                {this.getHrViewEmployee()}
+                {this.state.dashboardLoading ? <Spinner/> : this.getHrViewEmployee()}
             </div>
         );
     };
@@ -119,6 +150,11 @@ class Dashboard extends React.Component {
 
     render() {
         let dashboard = this.getLogin();
+        if (this.state.loading) {
+            dashboard = <div style={{marginTop: '36vh'}}>
+                <Spinner />
+            </div>;
+        }
         if (this.state.loginSuccess) {
             dashboard = (
                 <div>
@@ -142,31 +178,50 @@ class Dashboard extends React.Component {
         );
     };
 
-    submitLoginHandler = () => {
-        // console.log(this.state);
+    submitLoginHandler = async () => {
+        this.setState({ loading: true });
         const dashboardKeyName = `${this.state.isHrLogin ? 'hr' : 'employee'}Dashboard`;
-        axios.get('https://jsonplaceholder.typicode.com/users')
-            .then((res) => {
-                this.setState((prevState) => {
-                    const navItems = {
-                        ...prevState[dashboardKeyName].navItems,
-                        view: {
-                            ...prevState[dashboardKeyName].navItems.view,
-                            active: true,
-                        }
-                    };
-                    return {
-                        ...prevState,
-                        [dashboardKeyName]: {
-                            ...prevState[dashboardKeyName],
-                            navItems,
-                            employees: this.state.isHrLogin ? res.data : [res.data[0]],
-                        },
-                        loginSuccess: true
-                    };
-                });
-            })
-            .catch(() => this.setState({ loginError: true, loginSuccess: false }));
+        const loginUrl = `/login/${this.state.isHrLogin ? 'hr' : 'payroll'}-login`;
+        try {
+            const loginResponse = await axios.post(loginUrl, {
+                key: this.state.inputFields.username,
+                value: this.state.inputFields.password,
+            });
+            if (loginResponse && loginResponse.data && loginResponse.data.statusId) {
+                this.setState({ loginError: false, loginSuccess: true, loading: false });
+                const employeeDataUrl = this.state.isHrLogin
+                    ? '/hr/get-employees'
+                    : `/payroll/get-employee-details?employeeId=${this.state.inputFields.username}`;
+                const employeeDataResponse = await axios.get(employeeDataUrl);
+                if (employeeDataResponse) {
+                    const employees = this.state.isHrLogin ? employeeDataResponse.data.response.splice(0, 15) : [employeeDataResponse.data.response];
+                    this.setState((prevState) => {
+                        const navItems = {
+                            ...prevState[dashboardKeyName].navItems,
+                            view: {
+                                ...prevState[dashboardKeyName].navItems.view,
+                                active: true,
+                            }
+                        };
+                        return {
+                            ...prevState,
+                            [dashboardKeyName]: {
+                                ...prevState[dashboardKeyName],
+                                navItems,
+                                employees,
+                            },
+                            dashboardLoading: false,
+                        };
+                    });
+                } else {
+                    this.setState({ dashboardLoading: true });
+                }
+            } else {
+                this.setState({ loginError: true, loginSuccess: false, loading: false });
+            }
+        } catch (e) {
+            this.setState({ loginError: true, loginSuccess: false, loading: false });
+        }
     };
 
     changeInputFieldsHandler = (event) => {
