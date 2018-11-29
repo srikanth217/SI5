@@ -143,14 +143,16 @@ class Dashboard extends React.Component {
                 'employeeId', 'firstName', 'lastName', 'dateOfBirth', 'age',
                 'maritalStatus', 'jobId', 'hiringDate', 'joiningDate',
                 'nameOfSchool', 'degree', 'startDate', 'endDate',
-                'salary', 'isMonthly', 'phoneNumber', 'email', 'address'
+                'salary', 'isMonthly', 'phoneNumber', 'email', 'address',
+                'accountNumber'
             ]);
             const date = new Date();
             employeeView = <EmployeeCard
-                empId={employee.employeeId ? employee.employeeId : Math.floor(Math.random() * (199 - 3)) + 3}
+                empId={employee.employeeId}
                 empName={`${employee.firstName} ${employee.lastName}`}
                 empAge={employee.age ? employee.age : Math.floor(Math.random() * (53 - 21)) + 21}
                 empJoinDate={employee.joinDate ? employee.joinDate : `${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`}
+                empAccountNumber={employee.accountNumber}
             />;
         }
         return (
@@ -222,7 +224,13 @@ class Dashboard extends React.Component {
                     : `/payroll/get-employee-details?employeeId=${this.state.inputFields.username}`;
                 const employeeDataResponse = await axios.get(employeeDataUrl);
                 if (employeeDataResponse) {
-                    const employees = this.state.isHrLogin ? employeeDataResponse.data.response.splice(0, 20) : [employeeDataResponse.data.response];
+                    const employees = this.state.isHrLogin
+                        ? employeeDataResponse.data.response.splice(0, 20)
+                        : [{
+                            ...employeeDataResponse.data.response.payrollDetails,
+                            ...employeeDataResponse.data.response.bankDetails,
+                            ...employeeDataResponse.data.response.taxDetails,
+                        }];
                     this.setState((prevState) => {
                         const navItems = {
                             ...prevState[dashboardKeyName].navItems,
