@@ -16,8 +16,8 @@ class Dashboard extends React.Component {
         super(props);
         this.state = {
             inputFields: {
-                username: '11',
-                password: 'abc123'
+                username: null,
+                password: null
             },
             isHrLogin: true,
             loginError: false,
@@ -149,7 +149,8 @@ class Dashboard extends React.Component {
             ]);
             hrViewEmployee = (
                 <AddEmployee
-                    title={hrDashboard.updateEmployeeId ? `update employee Id: ${hrDashboard.updateEmployeeId}` : null}
+                    title={`update employee Id: ${hrDashboard.updateEmployeeId}`}
+                    submitText={'Update'}
                     goBackHandler={() => this.updatedNavItemsFor('hr', 'view')}
                     employee={employee}
                     changeEmployeeFieldsHandler={this.changeEmployeeFieldsHandler}

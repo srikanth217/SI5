@@ -104,7 +104,7 @@ const AddEmployee = (props) => {
                               onChange={props.changeEmployeeFieldsHandler}/>
                 </div>
                 <button type="button" className="btn btn-lg btn-info btn-block mt-4"
-                        onClick={props.submitPatchEmployeeHandler}>Submit</button>
+                        onClick={props.submitPatchEmployeeHandler}>{props.submitText ? props.submitText : 'Submit'}</button>
             </div>
         </div>
     );
