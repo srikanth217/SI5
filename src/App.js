@@ -5,8 +5,12 @@ import AddEmploye from './components/AddEmployee/AddEmployee';
 
 class App extends Component {
   render() {
+    const employee = {
+      firstName: 'F',
+      dateOfBirth: '12/12/2018'.split('/').reverse().join('-')
+    };
     return (
-        <AddEmploye />
+        <AddEmploye employee={employee} />
     );
   }
 }
