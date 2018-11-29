@@ -5,6 +5,7 @@ import './Dashboard.css';
 import Login from '../../components/Login/Login';
 import Navigation from '../../components/Navigation/Navigation';
 import EmployeeCards from '../../components/EmployeeCards/EmployeeCards';
+import EmployeeCard from '../../components/EmployeeCards/EmployeeCard/EmployeeCard';
 import Footer from '../../components/UI/Footer/Footer';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import AddEmployee from '../../components/AddEmployee/AddEmployee';
@@ -133,6 +134,31 @@ class Dashboard extends React.Component {
         );
     };
 
+    getEmployeeView = () => {
+        const employeeDashboard = this.state.employeeDashboard;
+        let employeeView = null;
+        if (employeeDashboard.navItems.view.active) {
+            const employee = _.pick(employeeDashboard.employees[0], [
+                'employeeId', 'firstName', 'lastName', 'dateOfBirth', 'age',
+                'maritalStatus', 'jobId', 'hiringDate', 'joiningDate',
+                'nameOfSchool', 'degree', 'startDate', 'endDate',
+                'salary', 'isMonthly', 'phoneNumber', 'email', 'address'
+            ]);
+            const date = new Date();
+            employeeView = <EmployeeCard
+                empId={employee.employeeId ? employee.employeeId : Math.floor(Math.random() * (199 - 3)) + 3}
+                empName={`${employee.firstName} ${employee.lastName}`}
+                empAge={employee.age ? employee.age : Math.floor(Math.random() * (53 - 21)) + 21}
+                empJoinDate={employee.joinDate ? employee.joinDate : `${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`}
+            />;
+        }
+        return (
+            <div className="container">
+                {employeeView}
+            </div>
+        );
+    };
+
     getEmployeeDashboard = () => {
         const employeeDashboard = this.state.employeeDashboard;
         const navItems = Object.keys(employeeDashboard.navItems).map(key => {
@@ -144,6 +170,7 @@ class Dashboard extends React.Component {
         return (
             <div>
                 <Navigation navigationItems={navItems} />
+                {this.state.dashboardLoading ? <Spinner/> : this.getEmployeeView()}
             </div>
         );
     };
