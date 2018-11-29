@@ -6,7 +6,7 @@ const AddEmployee = (props) => {
         <div className="container px-5">
             <button type="button" className="btn btn btn-outline-dark ml-5"
                     onClick={props.goBackHandler}>Go Back</button>
-            <p className="display-4 text-center">Add Employee Details</p>
+            <p className="display-4 text-center">{props.title ? props.title : 'Add Employee Details'}</p>
             <div className="form px-md-5">
                 <div className="form-group">
                     <input type="text" className="form-control" placeholder="First Name" name="firstName"
@@ -15,7 +15,7 @@ const AddEmployee = (props) => {
                 </div>
                 <div className="form-group">
                     <input type="text" className="form-control" placeholder="Last Name" name="lastName"
-                           defaultValue={employee && employee.lastName ? employee.firstName : null}
+                           defaultValue={employee && employee.lastName ? employee.lastName : null}
                            onChange={props.changeEmployeeFieldsHandler} />
                 </div>
                 <div className="form-group">

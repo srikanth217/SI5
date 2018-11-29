@@ -16,10 +16,10 @@ class Dashboard extends React.Component {
         super(props);
         this.state = {
             inputFields: {
-                username: null,
-                password: null
+                username: '11',
+                password: 'abc123'
             },
-            isHrLogin: false,
+            isHrLogin: true,
             loginError: false,
             loginSuccess: false,
             loading: false,
@@ -31,6 +31,7 @@ class Dashboard extends React.Component {
                 },
                 employees: [],
                 updateEmployeeId: null,
+                newEmployee: {},
             },
             employeeDashboard: {
                 navItems: {
@@ -82,13 +83,41 @@ class Dashboard extends React.Component {
                     ...prevState.hrDashboard,
                     navItems,
                     updateEmployeeId: emploeeId,
-                }
+                },
+                dashboardLoading: false,
+                loading: false,
             };
         });
     };
 
-    submitPatchEmployeeHandler = (employeeId) => {
-        // const patch
+    changeEmployeeFieldsHandler = (event) => {
+        const employees = [...this.state.hrDashboard.employees ];
+        const employeeIndex = employees.findIndex(employee => employee.employeeId === this.state.hrDashboard.updateEmployeeId);
+        const employee = employees[employeeIndex];
+        if (employee) {
+            employee[event.target.name] = event.target.value;
+        }
+        this.setState({
+            hrDashboard: {
+                ...this.state.hrDashboard,
+                employees,
+            },
+        });
+    };
+
+    submitPatchEmployeeHandler = async () => {
+        try {
+            const hrDashboard = { ...this.state.hrDashboard };
+            const employee = hrDashboard.employees.find(employee => employee.employeeId === hrDashboard.updateEmployeeId);
+            if (employee) {
+                await axios.patch('/hr/update-employee', employee);
+                this.updatedNavItemsFor('hr', 'view');
+            } else {
+                this.updatedNavItemsFor('hr', 'view');
+            }
+        } catch (e) {
+            this.updatedNavItemsFor('hr', 'view');
+        }
     };
 
     getHrViewEmployee = () => {
@@ -111,9 +140,20 @@ class Dashboard extends React.Component {
             hrViewEmployee = <EmployeeCards employeeCards={employeeCards} />;
         }
         if (hrDashboard.updateEmployeeId) {
+            let employee = hrDashboard.employees.find(employee => employee.employeeId === hrDashboard.updateEmployeeId);
+            employee = _.pick(employee, [
+                'firstName', 'lastName', 'dateOfBirth', 'age',
+                'maritalStatus', 'jobId', 'hiringDate', 'joiningDate',
+                'nameOfSchool', 'degree', 'startDate', 'endDate',
+                'salary', 'isMonthly', 'phoneNumber', 'email', 'address'
+            ]);
             hrViewEmployee = (
                 <AddEmployee
-                    goBackHandler={() => this.updatedNavItemsFor('hr', 'view')} />
+                    title={hrDashboard.updateEmployeeId ? `update employee Id: ${hrDashboard.updateEmployeeId}` : null}
+                    goBackHandler={() => this.updatedNavItemsFor('hr', 'view')}
+                    employee={employee}
+                    changeEmployeeFieldsHandler={this.changeEmployeeFieldsHandler}
+                    submitPatchEmployeeHandler={this.submitPatchEmployeeHandler}/>
             );
         }
         return hrViewEmployee;
@@ -225,7 +265,7 @@ class Dashboard extends React.Component {
                 const employeeDataResponse = await axios.get(employeeDataUrl);
                 if (employeeDataResponse) {
                     const employees = this.state.isHrLogin
-                        ? employeeDataResponse.data.response.splice(0, 20)
+                        ? employeeDataResponse.data.response.splice(0, 1)
                         : [{
                             ...employeeDataResponse.data.response.payrollDetails,
                             ...employeeDataResponse.data.response.bankDetails,
