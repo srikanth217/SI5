@@ -6,10 +6,10 @@ const employeeCards = (props) => {
     let employeeCards = [];
     if (props.employeeCards) {
         employeeCards = props.employeeCards.map((card, i) => <EmployeeCard
-            cardHeader={card.cardHeader}
-            cardTitle={card.cardTitle}
-            cardText={card.cardText}
-            cardEmail={card.cardEmail}
+            empId={card.empId}
+            empName={card.empName}
+            empAge={card.empAge}
+            empJoinDate={card.empJoinDate}
             cardButtons={card.cardButtons}
             key={i}/>);
     }

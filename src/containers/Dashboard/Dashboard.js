@@ -96,10 +96,10 @@ class Dashboard extends React.Component {
             const employeeCards = hrDashboard.employees.map(employee => {
                 const date = new Date();
                 return {
-                    cardHeader: `id: ${employee.employeeId}`,
-                    cardTitle: `name: ${employee.firstName} ${employee.lastName}`,
-                    cardText: `age: ${employee.age}`,
-                    cardEmail: `hiring date: ${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`,
+                    empId: `id: ${employee.employeeId}`,
+                    empName: `name: ${employee.firstName} ${employee.lastName}`,
+                    empAge: `age: ${employee.age}`,
+                    empJoinDate: `hiring date: ${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`,
                     cardButtons: [
                         { btnColor: 'btn-info', title: 'update', clicked: () => this.updateEmployeeHandler(employee.employeeId) },
                         { btnColor: 'btn-danger', title: 'delete', clicked: () => this.deleteEmployeeHandler(employee.employeeId) }
@@ -194,7 +194,7 @@ class Dashboard extends React.Component {
                     : `/payroll/get-employee-details?employeeId=${this.state.inputFields.username}`;
                 const employeeDataResponse = await axios.get(employeeDataUrl);
                 if (employeeDataResponse) {
-                    const employees = this.state.isHrLogin ? employeeDataResponse.data.response.splice(0, 15) : [employeeDataResponse.data.response];
+                    const employees = this.state.isHrLogin ? employeeDataResponse.data.response.splice(0, 20) : [employeeDataResponse.data.response];
                     this.setState((prevState) => {
                         const navItems = {
                             ...prevState[dashboardKeyName].navItems,
