@@ -4,9 +4,9 @@ const AddEmployee = (props) => {
     const employee = props.employee;
     return (
         <div className="container px-5">
-            <button type="button" className="btn btn btn-outline-dark ml-5"
-                    onClick={props.goBackHandler}>Go Back</button>
-            <p className="display-4 text-center">{props.title ? props.title : 'Add Employee Details'}</p>
+            <button type="button" className="btn btn btn-outline-dark ml-5 text-capitalize"
+                    onClick={props.goBackHandler}>go back</button>
+            <p className="display-4 text-center text-capitalize">{props.title ? props.title : 'Add Employee Details'}</p>
             <div className="form px-md-5">
                 <div className="form-group">
                     <input type="text" className="form-control" placeholder="First Name" name="firstName"
@@ -103,7 +103,7 @@ const AddEmployee = (props) => {
                               defaultValue={employee && employee.address ? employee.address : null}
                               onChange={props.changeEmployeeFieldsHandler}/>
                 </div>
-                <button type="button" className="btn btn-lg btn-info btn-block mt-4"
+                <button type="button" className="btn btn-lg btn-info btn-block mt-4 text-capitalize"
                         onClick={props.submitPatchEmployeeHandler}>{props.submitText ? props.submitText : 'Submit'}</button>
             </div>
         </div>

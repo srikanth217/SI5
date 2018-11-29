@@ -19,7 +19,7 @@ class Dashboard extends React.Component {
                 username: null,
                 password: null
             },
-            isHrLogin: true,
+            isHrLogin: false,
             loginError: false,
             loginSuccess: false,
             loading: false,
@@ -91,18 +91,31 @@ class Dashboard extends React.Component {
     };
 
     changeEmployeeFieldsHandler = (event) => {
-        const employees = [...this.state.hrDashboard.employees ];
-        const employeeIndex = employees.findIndex(employee => employee.employeeId === this.state.hrDashboard.updateEmployeeId);
-        const employee = employees[employeeIndex];
-        if (employee) {
-            employee[event.target.name] = event.target.value;
+        if (this.state.hrDashboard.updateEmployeeId) {
+            const employees = [...this.state.hrDashboard.employees ];
+            const employeeIndex = employees.findIndex(employee => employee.employeeId === this.state.hrDashboard.updateEmployeeId);
+            const employee = employees[employeeIndex];
+            if (employee) {
+                employee[event.target.name] = event.target.value;
+            }
+            this.setState({
+                hrDashboard: {
+                    ...this.state.hrDashboard,
+                    employees,
+                },
+            });
+        } else {
+            const newEmployee = this.state.hrDashboard.newEmployee;
+            if (newEmployee) {
+                newEmployee[event.target.name] = event.target.value;
+            }
+            this.setState({
+                hrDashboard: {
+                    ...this.state.hrDashboard,
+                    newEmployee,
+                },
+            });
         }
-        this.setState({
-            hrDashboard: {
-                ...this.state.hrDashboard,
-                employees,
-            },
-        });
     };
 
     submitPatchEmployeeHandler = async () => {
@@ -117,6 +130,43 @@ class Dashboard extends React.Component {
             }
         } catch (e) {
             this.updatedNavItemsFor('hr', 'view');
+        }
+    };
+
+    addNewEmployee = (employeeId) => {
+        this.setState((prevState) => {
+            const addedEmployee = {...prevState.hrDashboard.newEmployee};
+            const employees = [...prevState.hrDashboard.employees, addedEmployee];
+            addedEmployee.employeeId = employeeId || employees.length + 1;
+            const navItems = { ...prevState.hrDashboard.navItems };
+            Object.keys(navItems).forEach(key => navItems[key].active = false);
+            navItems.view.active = true;
+            return {
+                ...prevState,
+                hrDashboard: {
+                    ...prevState.hrDashboard,
+                    navItems,
+                    employees,
+                    newEmployee: {},
+                },
+            };
+        });
+    };
+
+    submitAddEmployeeHandler = async () => {
+        try {
+            const hrDashboard = { ...this.state.hrDashboard };
+            const newEmployee = { ...hrDashboard.newEmployee };
+            if (newEmployee) {
+                const createEmployeeRes = await axios.post('/hr/create-employee', newEmployee);
+                if (createEmployeeRes) {
+                    this.addNewEmployee(createEmployeeRes.data.response)
+                } else {
+                    this.addNewEmployee();
+                }
+            }
+        } catch (e) {
+            this.addNewEmployee();
         }
     };
 
@@ -139,22 +189,26 @@ class Dashboard extends React.Component {
             });
             hrViewEmployee = <EmployeeCards employeeCards={employeeCards} />;
         }
-        if (hrDashboard.updateEmployeeId) {
-            let employee = hrDashboard.employees.find(employee => employee.employeeId === hrDashboard.updateEmployeeId);
-            employee = _.pick(employee, [
-                'firstName', 'lastName', 'dateOfBirth', 'age',
-                'maritalStatus', 'jobId', 'hiringDate', 'joiningDate',
-                'nameOfSchool', 'degree', 'startDate', 'endDate',
-                'salary', 'isMonthly', 'phoneNumber', 'email', 'address'
-            ]);
+        if (hrDashboard.updateEmployeeId || hrDashboard.navItems.add.active) {
+            let employee = hrDashboard.updateEmployeeId
+                ? hrDashboard.employees.find(employee => employee.employeeId === hrDashboard.updateEmployeeId)
+                : hrDashboard.newEmployee;
+            if (hrDashboard.updateEmployeeId) {
+                employee = _.pick(employee, [
+                    'firstName', 'lastName', 'dateOfBirth', 'age',
+                    'maritalStatus', 'jobId', 'hiringDate', 'joiningDate',
+                    'nameOfSchool', 'degree', 'startDate', 'endDate',
+                    'salary', 'isMonthly', 'phoneNumber', 'email', 'address'
+                ]);
+            }
             hrViewEmployee = (
                 <AddEmployee
-                    title={`update employee Id: ${hrDashboard.updateEmployeeId}`}
-                    submitText={'Update'}
+                    title={hrDashboard.updateEmployeeId ? `update employee Id: ${hrDashboard.updateEmployeeId}` : 'add employee'}
+                    submitText={hrDashboard.updateEmployeeId ? 'update employee' : 'add employee'}
                     goBackHandler={() => this.updatedNavItemsFor('hr', 'view')}
                     employee={employee}
                     changeEmployeeFieldsHandler={this.changeEmployeeFieldsHandler}
-                    submitPatchEmployeeHandler={this.submitPatchEmployeeHandler}/>
+                    submitPatchEmployeeHandler={hrDashboard.updateEmployeeId ? this.submitPatchEmployeeHandler : this.submitAddEmployeeHandler}/>
             );
         }
         return hrViewEmployee;
